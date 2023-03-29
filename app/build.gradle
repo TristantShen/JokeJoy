@@ -1,24 +1,149 @@
-plugins {
-    id 'com.android.application'
-}
-
+apply plugin: 'com.android.application'
+apply from: '../common.gradle'
+apply plugin: 'kotlin-android'
 android {
-    compileSdk 32
 
+    // 资源目录存放指引：https://developer.android.google.cn/guide/topics/resources/providing-resources
     defaultConfig {
-        applicationId "com.tristan.jokejoy"
-        minSdk 21
-        targetSdk 32
-        versionCode 1
-        versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        // 无痛修改包名：https://www.jianshu.com/p/17327e191d2e
+        applicationId 'com.tristan.jokejoy'
+        resConfigs 'zh', 'xxhdpi'
+
+        // 仅保留中文语种的资源
+
+        // 仅保留 xxhdpi 图片资源（目前主流分辨率 1920 * 1080）
+
+        // 混淆配置
+        proguardFiles 'proguard-sdk.pro', 'proguard-app.pro'
+
+        // 日志打印开关
+        buildConfigField('boolean', 'LOG_ENABLE', '' + LOG_ENABLE + '')
+        // 测试包下的 BuglyId
+        buildConfigField('String', 'BUGLY_ID', '"' + BUGLY_ID + '"')
+        // 测试服务器的主机地址
+        buildConfigField('String', 'HOST_URL', '"' + HOST_URL + '"')
+
+        vectorDrawables {
+            useSupportLibrary true
+        }
     }
 
+    // Apk 签名的那些事：https://www.jianshu.com/p/a1f8e5896aa2
+    signingConfigs {
+        config {
+            storeFile file(StoreFile)
+            storePassword StorePassword
+            keyAlias KeyAlias
+            keyPassword KeyPassword
+        }
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    // Kotlin
+    kotlinOptions {
+        jvmTarget = '1.8'
+        useIR = true
+    }
+    packagingOptions {
+        jniLibs {
+            excludes += ['META-INF/*******']
+        }
+        resources {
+            excludes += ['META-INF/*******']
+        }
+    }
+
+    // 避免编译不能用于在编译类路径中发现的注解处理器，因为它们中的任何更改都需要运行注解处理任务
+    // kapt.includeCompileClasspath = false
+
+    // 构建配置：https://developer.android.google.cn/studio/build/build-variants
     buildTypes {
-        release {
+
+        debug {
+            // 给包名添加后缀
+            applicationIdSuffix '.debug'
+            // 调试模式开关
+            debuggable true
+            jniDebuggable true
+            // 压缩对齐开关
+            zipAlignEnabled false
+            // 移除无用的资源
+            shrinkResources false
+            // 代码混淆开关
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // 签名信息配置
+            signingConfig signingConfigs.config
+            // 日志打印开关
+            buildConfigField('boolean', 'LOG_ENABLE', 'true')
+            // 测试包下的 BuglyId
+            buildConfigField('String', 'BUGLY_ID', '"6ce2807170"')
+            // 测试服务器的主机地址
+            buildConfigField('String', 'HOST_URL', '"https://www.test.baidu.com/"')
+            // 添加清单占位符
+            addManifestPlaceholders([
+                    'app_name': '段子乐 Debug 版'
+            ])
+            // 调试模式下只保留一种架构的 so 库，提升打包速度
+            ndk {
+                abiFilters 'armeabi-v7a'
+            }
+        }
+
+        preview.initWith(debug)
+        preview {
+            applicationIdSuffix ''
+            // 添加清单占位符
+            addManifestPlaceholders([
+                    'app_name': '段子乐 Preview 版'
+            ])
+        }
+
+        release {
+            // 调试模式开关
+            debuggable false
+            jniDebuggable false
+            // 压缩对齐开关
+            zipAlignEnabled true
+            // 移除无用的资源
+            shrinkResources true
+            // 代码混淆开关
+            minifyEnabled true
+            // 签名信息配置
+            signingConfig signingConfigs.config
+            // 日志打印开关
+            buildConfigField('boolean', 'LOG_ENABLE', 'false')
+            // 正式包下的 BuglyId
+            buildConfigField('String', 'BUGLY_ID', '"6ce2807170"')
+            // 正式服务器的主机地址
+            buildConfigField('String', 'HOST_URL', '"https://www.baidu.com/"')
+            // 添加清单占位符
+            addManifestPlaceholders([
+                    'app_name': '@string/app_name'
+            ])
+            // 仅保留两种架构的 so 库，根据 Bugly 统计得出
+            ndk {
+                // armeabi：万金油架构平台（占用率：0%）
+                // armeabi-v7a：曾经主流的架构平台（占用率：10%）
+                // arm64-v8a：目前主流架构平台（占用率：95%）
+                abiFilters 'armeabi-v7a', 'arm64-v8a'
+                moduleName "app"
+            }
+        }
+    }
+
+    applicationVariants.all { variant ->
+
+        // Apk 输出文件名配置
+        variant.outputs.all { output ->
+            outputFileName = rootProject.getName() + '_v' + variant.versionName + '_' + variant.buildType.name
+            if (variant.buildType.name == buildTypes.release.getName()) {
+                outputFileName += '_' + new Date().format('MMdd')
+            }
+            outputFileName += '.apk'
         }
     }
     compileOptions {
