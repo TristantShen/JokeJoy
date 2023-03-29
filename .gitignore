@@ -1,0 +1,17 @@
+.gradle
+.idea
+.cxx
+.externalNativeBuild
+build
+captures
+
+._*
+*.iml
+.DS_Store
+local.properties
+
+/app/release
+/app/preview
+/app/debug
+/app/release.jks
+/app/gradle.properties
