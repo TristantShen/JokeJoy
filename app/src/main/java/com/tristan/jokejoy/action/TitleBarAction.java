@@ -11,16 +11,16 @@ import com.hjq.bar.OnTitleBarListener;
 import com.hjq.bar.TitleBar;
 
 /**
- *    author : Android 轮子哥
- *    github : https://github.com/getActivity/AndroidProject
- *    time   : 2019/12/08
- *    desc   : 标题栏意图
+ * @author : Android 轮子哥
+ * github : https://github.com/getActivity/AndroidProject
+ * time   : 2019/12/08
+ * desc   : 标题栏意图
  */
 public interface TitleBarAction extends OnTitleBarListener {
 
     @Nullable
     TitleBar getTitleBar();
-    
+
     /**
      * 左项被点击
      *
@@ -33,7 +33,7 @@ public interface TitleBarAction extends OnTitleBarListener {
     /**
      * 标题被点击
      *
-     * @param titleBar     titleBar
+     * @param titleBar titleBar
      */
     @Override
     default void onTitleClick(TitleBar titleBar) {
@@ -42,7 +42,7 @@ public interface TitleBarAction extends OnTitleBarListener {
     /**
      * 右项被点击
      *
-     * @param titleBar     titleBar
+     * @param titleBar titleBar
      */
     @Override
     default void onRightClick(TitleBar titleBar) {

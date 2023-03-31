@@ -5,7 +5,7 @@ import androidx.annotation.StringRes;
 import com.hjq.toast.ToastUtils;
 
 /**
- *    author : Android 轮子哥
+ *    @author : Android 轮子哥
  *    github : https://github.com/getActivity/AndroidProject
  *    time   : 2019/12/08
  *    desc   : 吐司意图

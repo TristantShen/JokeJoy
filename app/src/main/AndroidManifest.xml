@@ -28,6 +28,7 @@
     <!-- Android 11 软件包可见性适配：https://www.jianshu.com/p/d1ccd425c4ce -->
 
     <application
+        android:name=".app.AppApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="${app_name}"
@@ -42,6 +43,20 @@
         tools:replace="android:allowBackup,android:supportsRtl,android:label"
         tools:targetApi="n">
 
+        <!-- 自定义 WorkManager 配置和初始化：https://developer.android.com/topic/libraries/architecture/workmanager/advanced/custom-configuration#remove-default -->
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <!-- 移除默认初始化程序：移除 WorkManagerInitializer 节点 -->
+            <!-- If you are using androidx.startup to initialize other components -->
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+        </provider>
+
         <receiver
             android:name="com.xiaomi.market.sdk.DownloadCompleteReceiver"
             android:exported="false">
@@ -49,15 +64,45 @@
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
             </intent-filter>
         </receiver>
+
+        <!-- 闪屏页 -->
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".ui.activity.SplashActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="um.6426439fba6a5259c42b482f" />
+            </intent-filter>
+
+            <!-- 程序入口 -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" />
+
+        <!-- 崩溃展示（必须在独立进程） -->
+        <activity
+            android:name=".ui.activity.CrashActivity"
+            android:launchMode="singleTop"
+            android:process=":crash"
+            android:screenOrientation="landscape" />
+        <!-- 重启应用（必须在独立进程） -->
+        <activity
+            android:name=".ui.activity.RestartActivity"
+            android:launchMode="singleTop"
+            android:process=":restart" />
     </application>
 
 </manifest>

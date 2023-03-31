@@ -16,10 +16,10 @@ import com.tristan.jokejoy.widget.StatusLayout;
 
 
 /**
- *    author : Android 轮子哥
- *    github : https://github.com/getActivity/AndroidProject
- *    time   : 2019/12/08
- *    desc   : 状态布局意图
+ * @author : Android 轮子哥
+ * github : https://github.com/getActivity/AndroidProject
+ * time   : 2019/12/08
+ * desc   : 状态布局意图
  */
 public interface StatusAction {
 

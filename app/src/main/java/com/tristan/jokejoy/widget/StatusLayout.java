@@ -22,18 +22,24 @@ import com.tristan.jokejoy.R;
 
 
 /**
- *    author : Android 轮子哥
- *    github : https://github.com/getActivity/AndroidProject
- *    time   : 2019/04/18
- *    desc   : 状态布局（网络错误，异常错误，空数据）
+ * @author : Android 轮子哥
+ * github : https://github.com/getActivity/AndroidProject
+ * time   : 2019/04/18
+ * desc   : 状态布局（网络错误，异常错误，空数据）
  */
 public final class StatusLayout extends FrameLayout {
 
-    /** 主布局 */
+    /**
+     * 主布局
+     */
     private ViewGroup mMainLayout;
-    /** 提示图标 */
+    /**
+     * 提示图标
+     */
     private LottieAnimationView mLottieView;
-    /** 提示文本 */
+    /**
+     * 提示文本
+     */
     private TextView mTextView;
 
     public StatusLayout(@NonNull Context context) {

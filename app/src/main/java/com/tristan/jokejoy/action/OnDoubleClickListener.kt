@@ -1,4 +1,4 @@
-package cn.cqautotest.sunnybeach.action
+package com.tristan.jokejoy.action
 
 import android.view.View
 

@@ -30,7 +30,7 @@ ext {
     println "GradleLog ServerTypeOutput " + serverType
 
     // 友盟 AppKey
-    UMENG_APP_KEY = "5cb16d93570df399fd0014e2"
+    UMENG_APP_KEY = "6426439fba6a5259c42b482f"
     // QQ AppId
     QQ_APP_ID = "101828096"
     // QQ Secret
