@@ -2,8 +2,12 @@ package com.tristan.jokejoy.util;
 
 import android.text.TextUtils;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import timber.log.Timber;
 
 /**
  * @author : create by  szh
@@ -187,5 +191,53 @@ public class StringUtil {
             }
         }
         return true;
+    }
+
+    @NotNull
+    public static String unicodeToString(@NotNull String value) {
+        String str = value;
+        Pattern pattern = Pattern.compile("(\\\\u(\\p{XDigit}{4}))");
+        Matcher matcher = pattern.matcher((CharSequence) str);
+        try {
+
+            if (matcher.find()) {
+                if (matcher.group(2) == null) {
+                    return value;
+                } else {
+                    String group = matcher.group(2);
+                    //字符串转16进制
+                    String ch = str2HexStr(group);
+                    if (matcher.group(1) == null) {
+                        return value;
+                    } else {
+                        String group1 = matcher.group(1);
+                        str = str.replace(group1, ch);
+                    }
+                }
+            }
+        } catch (Throwable throwable) {
+            Timber.d(throwable);
+            throwable.printStackTrace();
+        }
+        return str;
+    }
+
+    /**
+     * 字符串转16进制
+     *
+     * @param str 需要转换的字符
+     */
+    public static String str2HexStr(String str) {
+        char[] chars = "0123456789ABCDEF".toCharArray();
+        StringBuilder sb = new StringBuilder();
+        byte[] bs = str.getBytes();
+        int bit;
+        for (int i = 0; i < bs.length; i++) {
+            bit = (bs[i] & 0x0f0) >> 4;
+            sb.append(chars[bit]);
+            bit = bs[i] & 0x0f;
+            sb.append(chars[bit]);
+        }
+        return sb.toString().trim();
     }
 }

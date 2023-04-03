@@ -20,6 +20,7 @@ import com.bumptech.glide.load.model.GlideUrl;
 import com.hjq.bar.TitleBar;
 import com.hjq.bar.style.RippleBarStyle;
 import com.hjq.gson.factory.GsonFactory;
+import com.hjq.http.EasyConfig;
 import com.hjq.toast.ToastLogInterceptor;
 import com.hjq.toast.ToastUtils;
 import com.hjq.umeng.UmengClient;
@@ -28,6 +29,8 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.mmkv.MMKV;
 import com.tristan.jokejoy.R;
+import com.tristan.jokejoy.http.RequestHandler;
+import com.tristan.jokejoy.http.RequestServer;
 import com.tristan.jokejoy.manager.ActivityManager;
 import com.tristan.jokejoy.manager.LocalCookieManager;
 import com.tristan.jokejoy.other.AppConfig;
@@ -115,7 +118,21 @@ public class AppApplication extends Application implements Configuration.Provide
                 .cookieJar(LocalCookieManager.get())
                 .build();
 
-
+        EasyConfig.with(okHttpClient)
+                // 是否打印日志
+                .setLogEnabled(AppConfig.isLogEnable())
+                // 设置服务器配置
+                .setServer(new RequestServer())
+                // 设置请求处理策略
+                .setHandler(new RequestHandler(application))
+                // 设置请求重试次数
+                .setRetryCount(1)
+                // 添加全局请求参数
+                //.addParam("token", "6666666")
+                // 添加全局请求头
+                //.addHeader("time", "20191030")
+                // 启用配置
+                .into();
 
         // 设置 Json 解析容错监听
         GsonFactory.setJsonCallback((typeToken, fieldName, jsonToken) -> {

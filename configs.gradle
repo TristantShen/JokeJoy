@@ -46,15 +46,17 @@ ext {
             LOG_ENABLE = true
             BUGLY_ID = "6ce2807170"
             if (serverType == SERVER_TYPE_PREVIEW) {
-                HOST_URL = "https://www.pre.baidu.com/"
+                HOST_URL = "http://tools.cretinzp.com/jokes/"
             } else {
-                HOST_URL = "https://www.test.baidu.com/"
+                HOST_URL = "http://tools.cretinzp.com/jokes/"
             }
+            TOKEN = "323CAFCD325A4537ADD69AADF96D35BF"
             break
         case SERVER_TYPE_PRODUCT:
             LOG_ENABLE = false
             BUGLY_ID = "6ce2807170"
             HOST_URL = "https://www.baidu.com/"
+            TOKEN = "323CAFCD325A4537ADD69AADF96D35BF"
             break
     }
 }

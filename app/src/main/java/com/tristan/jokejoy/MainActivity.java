@@ -3,10 +3,18 @@ package com.tristan.jokejoy;
 
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.tristan.jokejoy.app.AppActivity;
 import com.tristan.jokejoy.databinding.ActivityMainBinding;
+import com.tristan.jokejoy.http.HttpDisposable;
+import com.tristan.jokejoy.http.request.HttpFactory;
+import com.tristan.jokejoy.http.request.HttpRequest;
+import com.tristan.jokejoy.model.HomeBean;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * @author : create by  szh
@@ -31,7 +39,20 @@ public class MainActivity extends AppActivity {
 
     @Override
     protected void initData() {
+        HttpRequest.getInstance()
+                .getHomeData()
+                .compose(HttpFactory.schedulers())
+                .subscribe(new HttpDisposable<List<HomeBean>>() {
+                    @Override
+                    protected void success(List<HomeBean> value) {
+                        Timber.d(new Gson().toJson(value));
+                    }
 
+                    @Override
+                    protected void onFailure(Throwable e) {
+
+                    }
+                });
     }
 
     @Override

@@ -75,8 +75,10 @@
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="um.6426439fba6a5259c42b482f" />
             </intent-filter>
 
@@ -88,6 +90,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--软键盘将在活动启动时隐藏，并且只有在用户明确请求时才会显示。-->
+        <activity
+            android:name=".ui.activity.LoginActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true" />
