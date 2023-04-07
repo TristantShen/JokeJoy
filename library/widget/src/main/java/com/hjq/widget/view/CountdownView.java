@@ -63,11 +63,25 @@ public final class CountdownView extends AppCompatTextView implements Runnable {
     }
 
     /**
+     * 开始倒计时
+     */
+    public void start(int second) {
+        mRecordText = getText();
+        setEnabled(false);
+        mCurrentSecond = second;
+        post(this);
+    }
+
+    /**
      * 结束倒计时
      */
     public void stop() {
         setText(mRecordText);
         setEnabled(true);
+    }
+
+    public int getCurrentSecond(){
+        return mCurrentSecond;
     }
 
     @Override

@@ -98,6 +98,13 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
 
+        <!--注册页-->
+        <activity
+            android:name=".ui.activity.RegisterActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true" />
@@ -113,6 +120,9 @@
             android:name=".ui.activity.RestartActivity"
             android:launchMode="singleTop"
             android:process=":restart" />
+
+        <service
+            android:name=".service.CountdownService" />
     </application>
 
 </manifest>
